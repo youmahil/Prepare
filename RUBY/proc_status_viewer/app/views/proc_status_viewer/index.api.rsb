@@ -1,0 +1,26 @@
+api.array :proc_status do
+	@results.each do |res|
+		api.pstatus do
+			api.issue_number	res[0]
+			api.project_name	res[1]
+			api.biz_type		res[2]
+			api.issue_kind		res[3]
+			api.environment		res[4]
+			api.channel_div		res[5]
+			api.product_div		res[6]
+			api.subject			res[7]
+			api.description		res[8]
+			api.current_status	res[9]
+			api.priority		res[10]
+			api.author			res[11]
+			api.current_worker	res[12]
+			api.reg_date		res[13]
+			api.end_date		res[14]
+			api.due_date		res[15]
+			api.friendly_limit	res[16]
+			api.fix_worker		res[17]
+			api.fix_date		res[18]
+			api.history_list	res[19]
+		end
+	end
+end
