@@ -18,7 +18,7 @@ import cat.redmine.migration.utils.DatabaseUtils;
 * 작성일 : 2022.7.13.
 * 변경일 : 2022.7.13.
 */
-public class AllCopiedIssuesHistoryMigrationTool {
+public class CherryPickIssuesAndHistoryMigrationTool {
 		/**
 	* @param args
 	*/
