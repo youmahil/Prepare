@@ -262,6 +262,13 @@ public class AllCopiedIssuesHistoryMigrationTool {
 		return result;
 	}
 	
+	/**
+	* 지정된 일감 ID를 가지는 1개의 일감 정보를 추출한다.
+	* @param conn
+	* @param issue
+	* @return
+	* @throws SQLException
+	*/
 	private static Issue getSpecialIssue(Connection conn, int issueId)  throws SQLException{
 		Issue result = null;
 		try{
@@ -309,16 +316,73 @@ public class AllCopiedIssuesHistoryMigrationTool {
 		return result;		
 	}
 	
+	/**
+	* 지정된 1개 일감을, 지정된 대상 프로젝트에 복사하고, 복사된 해당 일감의 ID를 반환한다.
+	* @param conn
+	* @param issue
+	* @return
+	* @throws SQLException
+	*/	
 	private static int copyIssueIntoTargetProject(Connection conn, Issue issue)  throws SQLException{
 		int newIssueId = 0;
 		System.out.println("----- copyIssueIntoTargetProject::issue=" + issue.getString();
 		
 		try{
-			String queryInsert = "";
+			String queryInsert = " INSERT INTO issues "
+								+ " tracker_id, project_id, subject, description, due_date, "
+								+ " category_id, status_id, assigned_to_id, priority_id, fixed_version_id, "
+								+ " author_id, lock_version, created_on, updated_on, start_date "
+								+ " done_ratio, estimated_hours, parent_id, root_id, lft, "
+								+ " rgt, is_private, closed_on ) "
+								+ " VALUES ( ?, ?, ?, ?, str_to_date((?, '%Y-%m-%d'), "
+								+ " ?, ?, ?, ?, ?, "
+								+ " ?, ?, str_to_date(? , '%Y-%m-%d %H:%i:%s'), str_to_date(? , '%Y-%m-%d %H:%i:%s'), str_to_date((?, '%Y-%m-%d'), "
+								+ " ?, ?, ?, ?, ?, "
+								+ " " ?, ?, str_to_date(? , '%Y-%m-%d %H:%i:%s') ) ";
+								
+			System.out.println(">>>>> copyIssueIntoTargetProject::queryInsert =[" + queryInsert + "]");
+			PreparedStatement pstmtIns = conn.preparedStatement(queryInsert);
+			
+			pstmtIns.setInt(issue.getTrackerId());
+			pstmtIns.setInt(issue.getProjectId());
+			pstmtIns.setString(issue.getSubject());
+			pstmtIns.setString(issue.getDescription());
+			pstmtIns.setString(issue.getDueDate());
+			pstmtIns.setInt(issue.getCategoryId());
+			pstmtIns.setInt(issue.getStatusId());
+			pstmtIns.setInt(issue.getAssignedToId());
+			pstmtIns.setInt(issue.getPriorityId());
+			pstmtIns.setInt(issue.getFixedVersionId());
+			pstmtIns.setInt(issue.getAuthorId("));
+			pstmtIns.setInt(issue.getLockVersion());
+			pstmtIns.setString(issue.getCreatedOn());
+			pstmtIns.setString(issue.getUpdatedOn());
+			pstmtIns.setString(issue.getStartDate());
+			pstmtIns.setInt(issue.getDoneRatio());
+			pstmtIns.setFloat(issue.getEstimatedHours());
+			pstmtIns.setInt(issue.getParentId());
+			pstmtIns.setInt(issue.getRootId());
+			pstmtIns.setInt(issue.getLft());
+			pstmtIns.setInt(issue.getRgt());
+			pstmtIns.setString(issue.getPrivate());
+			pstmtIns.setString(issue.getClosedOn());
+			
+			int effect = pstmtIns.executeUpdate();
+			
+			if(effect > 0){
+				String queryMaxId = "SELECT max(id) as id FROM issues ";
+				PreparedStatement pstmtSel = conn.preparedStatement(queryMaxId);
+	
+				ResultSet rs = pstmtSel.executeQuery();
+				if(rs.next()){
+					newIssueId = rs.getInt("id");
+				}
+			}
+			
 		}catch(SQLException e){
 			throw e;
-		}	
-						
+		}
+		
 		return newIssueId;	
-	}
+	}	
 }
