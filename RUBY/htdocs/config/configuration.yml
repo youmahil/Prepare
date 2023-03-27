@@ -1,6 +1,7 @@
 ... 중간생략 ...
 # 이 부분을 지정 경로로 설정하면 해당되는 지정 경로로 업로드된 파일들이 저장된다.
 # 그렇지 않으면 기본적으로 ${레드마인설치경로}/apps/redmine/htdocs/files 경로에 저장된다.
+
 # Absolute path to the directory where attachments are stored.
 # The default is the 'files' directory in your Redmine instance.
 # Your Redmine instance needs to have write permission on this
