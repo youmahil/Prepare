@@ -1,3 +1,4 @@
+
 #... 중간 생략 ...
 Rails.application.routes.draw do
   #root :to => 'welcome#index' , :as => 'home'
