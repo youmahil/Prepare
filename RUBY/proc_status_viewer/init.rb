@@ -6,3 +6,4 @@ Redmine::Plugin.register :proc_status_viewer do
 	url 'http"//www.bluedigm.com/plugins/proc_status_viewer'
 	author_url 'http"//www.bluedigm.com/about'
 end
+
